@@ -43,6 +43,7 @@
    começa, a classe sai e a página volta para o escuro do Voz do Ser.
    ===================================================================== */
 body.claro{
+  background-color:#e7eee2;color:#22302a;
   --bg:#e7eee2;
   --cream:#22302a;
   --tintaRGB:34 48 42;
@@ -65,9 +66,12 @@ body .marcas .no-claro{display:none}
 body.claro .marcas .no-claro{display:block}
 *{margin:0;padding:0;box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%;overflow-x:hidden;overflow-x:clip}
-body{font-family:var(--corpo);background:var(--bg);color:var(--cream);
-  min-height:100svh;overflow-x:hidden;position:relative;line-height:1.55;
-  font-size:17px;-webkit-tap-highlight-color:transparent;
+body{font-family:var(--corpo);min-height:100svh;overflow-x:hidden;position:relative;
+  line-height:1.55;font-size:17px;-webkit-tap-highlight-color:transparent;
+  /* As cores do fundo e do texto vão LITERAIS aqui e no body.claro, não por
+     variável. Transição cujo valor escrito é var(--x) não dispara quando só a
+     variável muda, e o fundo fica preso na cor antiga. */
+  background-color:#0e2624;color:#e1f4f2;
   transition:background-color .7s ease,color .7s ease}
 
 /* fundo: um halo tiffany do Voz do Ser, um verde da ARVË, um vinho de sobra */
