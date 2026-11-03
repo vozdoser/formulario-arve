@@ -131,7 +131,8 @@ p.forte{color:var(--cream)}
   transition:transform .14s ease,opacity .2s ease,background .6s ease;margin-top:8px}
 .btn:active{transform:scale(.985)}
 .btn:disabled{opacity:.28;cursor:not-allowed}
-.voltar{background:none;border:0;color:rgb(var(--tintaRGB)/.46);font-family:var(--corpo);font-size:14px;
+.voltar{display:block;background:none;border:0;color:rgb(var(--tintaRGB)/.46);
+  font-family:var(--corpo);font-size:14px;
   cursor:pointer;padding:12px 2px;margin-top:4px;text-align:left}
 .voltar:hover{color:var(--cream)}
 
@@ -146,7 +147,16 @@ p.forte{color:var(--cream)}
   width:19px;height:19px;border-radius:50%;box-shadow:inset 0 0 0 1.5px rgb(var(--tintaRGB)/.3);
   transition:box-shadow .18s ease,background .18s ease}
 .op:active{transform:scale(.99)}
+/* opção com texto jurídico longo: corpo menor e alinhado pelo topo */
+.op.longa{font-size:15.5px;line-height:1.42;padding:18px 20px 18px 52px}
+.op.longa:before{top:21px;transform:none}
+/* caixa de seleção, para a declaração e a ciência */
+.op.caixa:before{border-radius:5px}
 .op.on{background:rgb(var(--aRGB)/.16);box-shadow:inset 0 0 0 1.5px var(--tiff)}
+ul.avisos{list-style:none;display:flex;flex-direction:column;gap:13px;margin:6px 0 22px}
+ul.avisos li{position:relative;padding-left:19px;color:rgb(var(--tintaRGB)/.85);line-height:1.5}
+ul.avisos li:before{content:"";position:absolute;left:0;top:.6em;width:7px;height:7px;
+  border-radius:50%;background:var(--tiff)}
 .op.on:before{background:var(--tiff);box-shadow:inset 0 0 0 1.5px var(--tiff),0 0 0 4px rgb(var(--aRGB)/.2)}
 
 /* campos */
@@ -242,20 +252,59 @@ const CFG = {
     endereco: "Avenida Afrânio Peixoto, 250, no Butantã"
   },
 
-  /* Termo de imagem e voz. A TELA É DESENHADA A PARTIR DAQUI e o texto exato
-     vai gravado junto com a resposta, então a página e o registro nunca podem
-     divergir. Mudou qualquer palavra, mude também a versão. */
-  termo: {
-    versao: "v1 (30/10/2026)",
-    preambulo: "Durante o encontro faremos registros em foto e vídeo para guardar e compartilhar momentos do dia.",
-    pergunta: "Você autoriza o Instituto Voz do Ser a usar a sua imagem e a sua voz em redes sociais, portfólios e materiais de divulgação?",
-    sim: "Sim, autorizo",
-    nao: "Não autorizo"
+  /* ===================================================================
+     REDAÇÃO DO JURÍDICO. Copiada palavra por palavra do documento
+     "Conteúdo jurídico obrigatório" (Voz do Ser · Jurídico, 03/11/2026).
+     NÃO MUDAR NADA AQUI sem validar antes com o jurídico: as telas são
+     desenhadas a partir destes textos e o que a pessoa aceitou vai
+     gravado com esta mesma redação no comprovante e na planilha.
+     =================================================================== */
+  jur: {
+    versao: "v2 (03/11/2026), redação do jurídico",
+
+    abertura: "Este formulário é individual e deve ser preenchido pessoalmente por cada participante até 27 de novembro de 2026.",
+
+    alimentar: {
+      pergunta: "Você possui alguma restrição, alergia ou intolerância alimentar?",
+      nao: "Não possuo nenhuma restrição, alergia ou intolerância alimentar.",
+      sim: "Sim, possuo. Descreva:"
+    },
+
+    consentAlimentar: {
+      explicativo: "As informações sobre restrições, alergias e intolerâncias alimentares são consideradas dados pessoais sensíveis pela Lei Geral de Proteção de Dados (Lei n.º 13.709/18) e só podem ser utilizadas com a sua autorização.",
+      pergunta: "Você autoriza o uso dessas informações?",
+      autorizo: "AUTORIZO o Voz do Ser a utilizar as informações sobre minhas restrições, alergias e intolerâncias alimentares exclusivamente para a preparação da alimentação do encontro.",
+      naoAutorizo: "NÃO AUTORIZO. Estou ciente de que, sem essa autorização, o Voz do Ser não poderá considerar minhas restrições na preparação da alimentação."
+    },
+
+    imagem: {
+      explicativo: "O encontro poderá ser registrado em fotos e vídeos pelo Voz do Ser, para divulgação em seu site, em suas redes sociais e em seus materiais institucionais. A autorização é opcional e gratuita, e sua escolha será integralmente respeitada.",
+      pergunta: "Você autoriza o uso da sua imagem e da sua voz?",
+      autorizo: "AUTORIZO, em caráter gratuito, o uso da minha imagem e da minha voz captadas durante o encontro, para as finalidades descritas acima.",
+      naoAutorizo: "NÃO AUTORIZO o uso da minha imagem e da minha voz. Estou ciente de que não serei exibido(a) de forma identificável em nenhuma publicação.",
+      abaixo: "Você poderá revogar sua autorização a qualquer momento pelo e-mail falecomvozdoser@gmail.com, e as publicações existentes serão retiradas em até 10 (dez) dias úteis. O Voz do Ser não utilizará sua imagem de forma que prejudique sua honra ou reputação, nem divulgará o conteúdo das vivências e conversas do encontro. Formulários sem resposta a esta pergunta serão devolvidos para complementação e, até lá, sua imagem não será divulgada."
+    },
+
+    importantes: [
+      "O almoço não está incluído na programação e ficará a cargo de cada participante.",
+      "Para preservar a confidencialidade das vivências, não é permitido gravar o encontro em áudio ou vídeo.",
+      "Os resultados individuais dos testes de perfil aplicados durante o encontro pertencem a cada participante e não serão repassados à empresa sem sua autorização."
+    ],
+
+    declaracao: "Declaro que preenchi pessoalmente este formulário, que as informações prestadas são verdadeiras e de minha responsabilidade e que estou ciente de que o Voz do Ser não se responsabiliza por reações ou intercorrências decorrentes de restrições, alergias ou intolerâncias alimentares não informadas neste formulário, nem por alimentos consumidos no almoço ou trazidos por mim.",
+
+    ciencia: "Li e estou ciente do aviso de proteção de dados abaixo.",
+
+    aviso: "Os dados informados neste formulário serão tratados pela VOZ DO SER TREINAMENTOS LTDA, inscrita no CNPJ sob o n.º 29.497.663/0001-45, exclusivamente para a organização do encontro e para as finalidades autorizadas acima, nos termos da Lei n.º 13.709/18. Eles não serão compartilhados com terceiros, salvo por exigência legal, e serão conservados apenas pelo prazo necessário ao cumprimento de obrigações legais e ao exercício regular de direitos. Você pode exercer os direitos previstos no art. 18 da mesma lei, como acesso, correção e eliminação de seus dados, pelo e-mail falecomvozdoser@gmail.com."
   },
 
-  /* e-mail que o participante usa para falar com o Voz do Ser.
-     Não é o e-mail do Drive, que é só onde a planilha mora. */
-  contato: "falecom@vozdoser.com.br",
+  /* O formulário fecha no fim deste dia (item 7 do documento do jurídico) */
+  prazo: "2026-11-27",
+
+  /* E-mail de contato. ATENÇÃO: este é o endereço que o documento do
+     jurídico usa, nos dois lugares em que cita contato. A Silvia havia
+     passado falecom@vozdoser.com.br. Confirmar qual vale. */
+  contato: "falecomvozdoser@gmail.com",
 
   /* linha do meio de cada bloco: cair exatamente nela e empate */
   linhaDoMeio: 5,
@@ -312,11 +361,16 @@ const CHAVE = "vds_arve_v1";
 let S = {
   passo: 0,
   nome:"", email:"", cargo:"",
+  codigo:"", codigoOk:false,   /* verificação do e-mail por código */
   respostas:{},
   b1:Array(CFG.bloco1.length).fill(null),  /* 0 = coluna A, 1 = coluna B */
   b2:Array(CFG.bloco2.length).fill(null),  /* 0 = coluna C, 1 = coluna D */
   trocaB1:null, trocaB2:null,
-  imagem:null, temRestricao:null, restricao:"",
+  temRestricao:null, restricao:"",
+  consenteAlimentar:null,   /* bloco 3 do jurídico */
+  imagem:null,              /* bloco 4 do jurídico */
+  declaracao:false,         /* bloco 6 do jurídico */
+  ciencia:false,            /* bloco 6 do jurídico */
   enviado:false
 };
 
@@ -375,16 +429,28 @@ function resultado(){
 /* =======================================================================
    ROTEIRO DE TELAS
    ======================================================================= */
+/* Item 7 do documento do jurídico: o formulário fica aberto até 27/11/2026.
+   Passado o prazo, a página deixa de aceitar resposta. */
+function fechado(){
+  if(!CFG.prazo) return false;
+  return new Date() > new Date(CFG.prazo + "T23:59:59-03:00");
+}
+
 function roteiro(){
-  const t = [{tipo:"abertura"}, {tipo:"identificacao"}];
+  if(fechado()) return [{tipo:"encerrado"}];
+  const t = [{tipo:"abertura"}, {tipo:"identificacao"}, {tipo:"codigo"}];
   CFG.abertas.forEach((q,i)=> t.push({tipo:"aberta", i:i}));
   t.push({tipo:"introTeste"});
   CFG.bloco1.forEach((p,i)=> t.push({tipo:"par", bloco:1, i:i}));
   CFG.bloco2.forEach((p,i)=> t.push({tipo:"par", bloco:2, i:i}));
   if(empatouB()) t.push({tipo:"desempate", bloco:1});
   if(empatouD()) t.push({tipo:"desempate", bloco:2});
-  t.push({tipo:"imagem"});
-  t.push({tipo:"alimentar"});
+  /* a partir daqui, a ordem segue os blocos do documento do jurídico */
+  t.push({tipo:"alimentar"});          /* bloco 2 */
+  t.push({tipo:"consentAlimentar"});   /* bloco 3 */
+  t.push({tipo:"imagem"});             /* bloco 4 */
+  t.push({tipo:"importantes"});        /* bloco 5 */
+  t.push({tipo:"declaracao"});         /* bloco 6 */
   t.push({tipo:"revisao"});
   t.push({tipo:"fim"});
   return t;
@@ -410,13 +476,13 @@ function pinta(){
   if(S.passo >= r.length) S.passo = r.length-1;
   const p = r[S.passo];
   const total = r.length - 1;
-  $("#progresso").style.width = Math.round((S.passo/total)*100) + "%";
+  $("#progresso").style.width = (total > 0 ? Math.round((S.passo/total)*100) : 0) + "%";
   $("#rodape").innerHTML = (p.tipo==="abertura" || p.tipo==="fim")
     ? "Instituto Voz do Ser · Comunicação com Propósito"
     : "";
   /* tema claro da ARVË até a última pergunta aberta; do teste em diante,
      o escuro do Voz do Ser */
-  const antesDoTeste = ["abertura","identificacao","aberta"].indexOf(p.tipo) > -1;
+  const antesDoTeste = ["abertura","identificacao","codigo","aberta"].indexOf(p.tipo) > -1;
   document.body.classList.toggle("claro", antesDoTeste);
 
   const palco = $("#palco");
@@ -437,17 +503,11 @@ function html(p){
     <h1>Antes do <em>nosso encontro</em></h1>
     <p class="forte">No dia ${esc(CFG.evento.data)} a gente passa o dia junto, ${esc(CFG.evento.hora)}, no ${esc(CFG.evento.local)}.</p>
     <p>Este formulário leva cerca de cinco minutos e é o que nos permite preparar o encontro para te receber melhor.</p>
+    <p class="forte">${esc(CFG.jur.abertura)}</p>
     <button class="btn" id="ir">Começar</button>
     <details class="gaveta">
-      <summary>Como usamos as suas respostas</summary>
-      <div class="dentro">
-        <p><b>Quem guarda.</b> O Instituto Voz do Ser, responsável pelo encontro.</p>
-        <p><b>O que guardamos.</b> Seu nome, e-mail, área, as três respostas abertas, o resultado do teste de perfil, a sua resposta sobre imagem e voz e a restrição alimentar, se houver.</p>
-        <p><b>Para quê.</b> Preparar as dinâmicas do dia, organizar o café da manhã e conduzir a devolutiva do seu perfil durante o encontro.</p>
-        <p><b>Com quem.</b> A equipe do Voz do Ser que conduz o encontro. Os temas que aparecerem no conjunto das respostas podem ser levados à liderança da ARVË de forma agrupada, sem identificar quem escreveu o quê.</p>
-        <p><b>Por quanto tempo.</b> Cada informação fica guardada enquanto ainda servir para aquilo que foi pedida: a restrição alimentar até o dia do encontro, as suas respostas e o seu perfil enquanto durar o nosso trabalho com a ARVË, e a sua resposta sobre imagem e voz enquanto a imagem estiver em uso. Depois disso, a informação é apagada ou deixa de estar ligada ao seu nome.</p>
-        <p><b>Seus direitos.</b> Você pode pedir acesso, correção ou exclusão dos seus dados, e retirar a autorização de imagem a qualquer momento, escrevendo para ${esc(CFG.contato)}.</p>
-      </div>
+      <summary>Aviso de proteção de dados</summary>
+      <div class="dentro"><p>${esc(CFG.jur.aviso)}</p></div>
     </details>`;
 
   case "identificacao": return `
@@ -463,6 +523,22 @@ function html(p){
     <div class="erro" id="erro"></div>
     <button class="btn" id="ir">Continuar</button>
     <button class="voltar" id="volta">Voltar</button>`;
+
+  case "codigo": return `
+    <div class="conta">Confirmação do e-mail</div>
+    <h2>Mandamos um <em>código</em> para você</h2>
+    <p>Para a sua resposta valer como documento, a gente precisa confirmar que este e-mail é seu mesmo:</p>
+    <p class="forte" style="word-break:break-all">${esc(S.email)}</p>
+    <p>Abra a sua caixa de entrada e digite aqui o número de seis dígitos que acabou de chegar. <b>Se não achar, olhe no spam.</b></p>
+    <label for="cod">Código de seis dígitos</label>
+    <input type="text" id="cod" inputmode="numeric" autocomplete="one-time-code"
+           maxlength="6" placeholder="000000"
+           style="font-size:30px;letter-spacing:.34em;text-align:center;font-weight:700"
+           value="${esc(S.codigo)}">
+    <div class="erro" id="erro"></div>
+    <button class="btn" id="ir">Confirmar</button>
+    <button class="voltar" id="reenviar">Não chegou, reenviar o código</button>
+    <button class="voltar" id="volta">Trocar o e-mail</button>`;
 
   case "aberta": {
     const q = CFG.abertas[p.i];
@@ -518,32 +594,70 @@ function html(p){
     <button class="btn" id="ir" ${troca===null?"disabled":""}>É essa</button>`;
   }
 
-  case "imagem": return `
-    <div class="conta">Autorização</div>
-    <h2>Imagem e <em>voz</em></h2>
-    <p>${esc(CFG.termo.preambulo)}</p>
-    <p class="forte">${esc(CFG.termo.pergunta)}</p>
+  /* ---------- bloco 2 do jurídico: restrições alimentares ---------- */
+  case "alimentar": return `
+    <div class="conta">Alimentação</div>
+    <h2>Vamos te receber com o <em>café da manhã</em></h2>
+    <p class="forte">${esc(CFG.jur.alimentar.pergunta)}</p>
     <div class="opcoes">
-      <button class="op ${S.imagem===true?"on":""}" data-v="1">${esc(CFG.termo.sim)}</button>
-      <button class="op ${S.imagem===false?"on":""}" data-v="0">${esc(CFG.termo.nao)}</button>
+      <button class="op longa ${S.temRestricao===false?"on":""}" data-v="0">${esc(CFG.jur.alimentar.nao)}</button>
+      <button class="op longa ${S.temRestricao===true?"on":""}" data-v="1">${esc(CFG.jur.alimentar.sim)}</button>
     </div>
-    <p class="mini" style="margin-top:16px">Se você não autorizar, nada muda na sua participação. Você pode mudar de ideia depois, escrevendo para ${esc(CFG.contato)}.</p>
+    <div id="qual" style="display:${S.temRestricao===true?"block":"none"}">
+      <label for="restricao">Descreva</label>
+      <input type="text" id="restricao" value="${esc(S.restricao)}" placeholder="Por exemplo: sem lactose, vegetariana">
+    </div>
     <div class="erro" id="erro"></div>
     <button class="btn" id="ir">Continuar</button>
     <button class="voltar" id="volta">Voltar</button>`;
 
-  case "alimentar": return `
-    <div class="conta">Alimentação</div>
-    <h2>Sobre o <em>café da manhã</em></h2>
-    <p class="forte">Vamos te receber com o café da manhã, e queremos saber de você.</p>
-    <p>Você tem alguma restrição alimentar?</p>
+  /* ---------- bloco 3 do jurídico: consentimento alimentar ---------- */
+  case "consentAlimentar": return `
+    <div class="conta">Autorização</div>
+    <h2>Uso das informações <em>alimentares</em></h2>
+    <p>${esc(CFG.jur.consentAlimentar.explicativo)}</p>
+    <p class="forte">${esc(CFG.jur.consentAlimentar.pergunta)}</p>
     <div class="opcoes">
-      <button class="op ${S.temRestricao===true?"on":""}" data-v="1">Tenho</button>
-      <button class="op ${S.temRestricao===false?"on":""}" data-v="0">Não tenho</button>
+      <button class="op longa ${S.consenteAlimentar===true?"on":""}" data-v="1">${esc(CFG.jur.consentAlimentar.autorizo)}</button>
+      <button class="op longa ${S.consenteAlimentar===false?"on":""}" data-v="0">${esc(CFG.jur.consentAlimentar.naoAutorizo)}</button>
     </div>
-    <div id="qual" style="display:${S.temRestricao===true?"block":"none"}">
-      <label for="restricao">Qual?</label>
-      <input type="text" id="restricao" value="${esc(S.restricao)}" placeholder="Por exemplo: sem lactose, vegetariana">
+    <div class="erro" id="erro"></div>
+    <button class="btn" id="ir">Continuar</button>
+    <button class="voltar" id="volta">Voltar</button>`;
+
+  /* ---------- bloco 4 do jurídico: imagem e voz ---------- */
+  case "imagem": return `
+    <div class="conta">Autorização</div>
+    <h2>Imagem e <em>voz</em></h2>
+    <p>${esc(CFG.jur.imagem.explicativo)}</p>
+    <p class="forte">${esc(CFG.jur.imagem.pergunta)}</p>
+    <div class="opcoes">
+      <button class="op longa ${S.imagem===true?"on":""}" data-v="1">${esc(CFG.jur.imagem.autorizo)}</button>
+      <button class="op longa ${S.imagem===false?"on":""}" data-v="0">${esc(CFG.jur.imagem.naoAutorizo)}</button>
+    </div>
+    <p class="mini" style="margin-top:16px">${esc(CFG.jur.imagem.abaixo)}</p>
+    <div class="erro" id="erro"></div>
+    <button class="btn" id="ir">Continuar</button>
+    <button class="voltar" id="volta">Voltar</button>`;
+
+  /* ---------- bloco 5 do jurídico: informações importantes ---------- */
+  case "importantes": return `
+    <div class="conta">Antes de enviar</div>
+    <h2>Informações <em>importantes</em></h2>
+    <ul class="avisos">${CFG.jur.importantes.map(t=>`<li>${esc(t)}</li>`).join("")}</ul>
+    <button class="btn" id="ir">Entendi</button>
+    <button class="voltar" id="volta">Voltar</button>`;
+
+  /* ---------- bloco 6 do jurídico: declaração e ciência ---------- */
+  case "declaracao": return `
+    <div class="conta">Declaração</div>
+    <h2>Para <em>finalizar</em></h2>
+    <div class="opcoes">
+      <button class="op caixa longa ${S.declaracao?"on":""}" data-c="declaracao">${esc(CFG.jur.declaracao)}</button>
+      <button class="op caixa longa ${S.ciencia?"on":""}" data-c="ciencia">${esc(CFG.jur.ciencia)}</button>
+    </div>
+    <div class="gaveta" style="margin-top:18px">
+      <div class="dentro" style="padding:16px 18px"><p>${esc(CFG.jur.aviso)}</p></div>
     </div>
     <div class="erro" id="erro"></div>
     <button class="btn" id="ir">Continuar</button>
@@ -553,10 +667,15 @@ function html(p){
     <div class="conta">Conferir e enviar</div>
     <h2>Tudo certo, <em>${esc((S.nome||"").split(" ")[0])}</em>?</h2>
     <p class="forte">Muito obrigado por responder.</p>
-    <p class="mini">Ao enviar, você confirma que a sua resposta sobre imagem e voz foi dada por você, com a data e a hora deste envio. Termo ${esc(CFG.termo.versao)}. Uma cópia vai para o seu e-mail.</p>
+    <p class="mini">Ao enviar, você confirma que as respostas e as autorizações deste formulário foram dadas por você, com a data e a hora deste envio. Redação ${esc(CFG.jur.versao)}. Uma cópia vai para o seu e-mail.</p>
     <div class="erro" id="erro"></div>
     <button class="btn" id="ir">Enviar as minhas respostas</button>
     <button class="voltar" id="volta">Voltar</button>`;
+
+  case "encerrado": return `
+    <h1>Formulário <em>encerrado</em></h1>
+    <p class="forte">O prazo de preenchimento terminou em 27 de novembro de 2026.</p>
+    <p>Se você precisa enviar ou corrigir alguma informação, escreva para ${esc(CFG.contato)}.</p>`;
 
   case "fim": return `
     <div class="selo">✓</div>
@@ -584,16 +703,67 @@ function liga(p){
     ir.onclick = proximo; break;
 
   case "identificacao":
-    ir.onclick = ()=>{
+    ir.onclick = async ()=>{
+      const antes = S.email;
       S.nome  = $("#nome").value.trim();
       S.email = $("#email").value.trim();
       S.cargo = $("#cargo").value.trim();
       if(S.nome.length < 3){ $("#erro").textContent = "Escreva o seu nome completo."; return; }
       if(!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(S.email)){ $("#erro").textContent = "Confira o e-mail."; return; }
       if(S.cargo.length < 2){ $("#erro").textContent = "Escreva a sua área ou o seu cargo."; return; }
-      salva(); proximo();
+      /* trocou de e-mail, a verificação anterior não vale mais */
+      if(S.email !== antes){ S.codigo = ""; S.codigoOk = false; }
+      salva();
+
+      ir.disabled = true; ir.textContent = "Mandando o código...";
+      const r = await postar({ acao:"codigo", email:S.email, nome:S.nome });
+      ir.disabled = false; ir.textContent = "Continuar";
+
+      if(r === "ok"){ proximo(); return; }
+      if(r === "ja-respondeu"){
+        $("#erro").innerHTML = "Este e-mail já respondeu o formulário. Se precisar corrigir "
+          + "alguma coisa, escreva para " + esc(CFG.contato) + ".";
+        return;
+      }
+      if(r === "email-invalido"){ $("#erro").textContent = "Confira o e-mail."; return; }
+      $("#erro").innerHTML = "Não consegui mandar o código agora. Tente de novo em alguns "
+        + "segundos. Se continuar sem funcionar, escreva para " + esc(CFG.contato) + ".";
     };
     break;
+
+  case "codigo": {
+    const campo = $("#cod");
+    const recado = (r)=>{
+      if(r === "codigo-errado")     return "Código errado. Confira os seis dígitos do e-mail.";
+      if(r === "codigo-expirado")   return "Esse código venceu. Peça um novo ali embaixo.";
+      if(r === "muitas-tentativas") return "Tentativas demais. Peça um código novo ali embaixo.";
+      if(r === "sem-codigo")        return "Não achei um código para este e-mail. Peça um novo.";
+      return "Não consegui conferir agora. Tente de novo em alguns segundos.";
+    };
+    campo.oninput = ()=>{
+      campo.value = campo.value.replace(/\D/g, "").slice(0,6);
+      S.codigo = campo.value; $("#erro").textContent = "";
+    };
+    ir.onclick = async ()=>{
+      if(S.codigo.length !== 6){ $("#erro").textContent = "O código tem seis dígitos."; return; }
+      ir.disabled = true; ir.textContent = "Conferindo...";
+      const r = await postar({ acao:"verificar", email:S.email, codigo:S.codigo });
+      ir.disabled = false; ir.textContent = "Confirmar";
+      if(r === "ok"){ S.codigoOk = true; salva(); proximo(); return; }
+      S.codigoOk = false; salva();
+      $("#erro").textContent = recado(r);
+    };
+    $("#reenviar").onclick = async ()=>{
+      const b = $("#reenviar");
+      b.disabled = true; b.textContent = "Mandando...";
+      const r = await postar({ acao:"codigo", email:S.email, nome:S.nome });
+      b.disabled = false; b.textContent = "Não chegou, reenviar o código";
+      $("#erro").textContent = (r === "ok")
+        ? "Pronto, mandei outro código. Olhe a caixa de entrada e o spam."
+        : "Não consegui reenviar agora. Tente em alguns segundos.";
+    };
+    break;
+  }
 
   case "aberta":
     ir.onclick = ()=>{
@@ -656,19 +826,23 @@ function liga(p){
     break;
   }
 
+  /* escolha única entre duas opções, guardando em S[campo] */
   case "imagem":
+  case "consentAlimentar": {
+    const campo = (p.tipo === "imagem") ? "imagem" : "consenteAlimentar";
     document.querySelectorAll(".op").forEach(b=>{
       b.onclick = ()=>{
-        S.imagem = b.dataset.v === "1";
+        S[campo] = b.dataset.v === "1";
         document.querySelectorAll(".op").forEach(o=>o.classList.remove("on"));
-        b.classList.add("on"); salva();
+        b.classList.add("on"); $("#erro").textContent = ""; salva();
       };
     });
     ir.onclick = ()=>{
-      if(S.imagem === null){ $("#erro").textContent = "Escolha uma das duas opções."; return; }
+      if(S[campo] === null){ $("#erro").textContent = "Escolha uma das duas opções."; return; }
       proximo();
     };
     break;
+  }
 
   case "alimentar":
     document.querySelectorAll(".op").forEach(b=>{
@@ -678,17 +852,40 @@ function liga(p){
         b.classList.add("on");
         $("#qual").style.display = S.temRestricao ? "block" : "none";
         if(S.temRestricao) setTimeout(()=>{ const c=$("#restricao"); if(c) c.focus(); }, 60);
-        salva();
+        $("#erro").textContent = ""; salva();
       };
     });
     ir.onclick = ()=>{
       if(S.temRestricao === null){ $("#erro").textContent = "Escolha uma das duas opções."; return; }
       if(S.temRestricao){
         const v = ($("#restricao").value||"").trim();
-        if(v.length < 2){ $("#erro").textContent = "Conta para a gente qual é a restrição."; return; }
+        if(v.length < 2){ $("#erro").textContent = "Descreva a sua restrição antes de seguir."; return; }
         S.restricao = v;
       } else S.restricao = "";
       salva(); proximo();
+    };
+    break;
+
+  case "importantes":
+    ir.onclick = proximo; break;
+
+  /* as duas caixas do bloco 6 são obrigatórias, e marcam de forma
+     independente uma da outra */
+  case "declaracao":
+    document.querySelectorAll(".op").forEach(b=>{
+      b.onclick = ()=>{
+        const campo = b.dataset.c;
+        S[campo] = !S[campo];
+        b.classList.toggle("on", S[campo]);
+        $("#erro").textContent = ""; salva();
+      };
+    });
+    ir.onclick = ()=>{
+      if(!S.declaracao || !S.ciencia){
+        $("#erro").textContent = "Marque as duas caixas para seguir.";
+        return;
+      }
+      proximo();
     };
     break;
 
@@ -707,16 +904,42 @@ function pacote(){
   const escolhasB2 = S.b2.map((v,i)=> (S.trocaB2===i ? (v===1?0:1) : v));
   const nomeia = (lista, escolhas) => escolhas.map((v,i)=> lista[i][v]).join(" | ");
   return {
-    versaoTermo: CFG.termo.versao,
-    /* o texto literal que estava na tela, para o registro provar por si so
-       o que a pessoa aceitou, sem depender de abrir a pagina de novo */
-    textoDoTermo: CFG.termo.preambulo + " " + CFG.termo.pergunta
-                  + " Resposta: " + (S.imagem ? CFG.termo.sim : CFG.termo.nao) + ".",
+    versaoTermo: CFG.jur.versao,
+    /* O texto literal que estava na tela, para o registro provar por si só
+       o que a pessoa aceitou, sem depender de abrir a página de novo.
+       São os quatro aceites do documento do jurídico. */
+    textoDoTermo: [
+      "USO DAS INFORMAÇÕES ALIMENTARES",
+      CFG.jur.consentAlimentar.explicativo,
+      CFG.jur.consentAlimentar.pergunta,
+      "Resposta: " + (S.consenteAlimentar ? CFG.jur.consentAlimentar.autorizo
+                                          : CFG.jur.consentAlimentar.naoAutorizo),
+      "",
+      "IMAGEM E VOZ",
+      CFG.jur.imagem.explicativo,
+      CFG.jur.imagem.pergunta,
+      "Resposta: " + (S.imagem ? CFG.jur.imagem.autorizo : CFG.jur.imagem.naoAutorizo),
+      CFG.jur.imagem.abaixo,
+      "",
+      "DECLARAÇÃO (marcada pelo participante)",
+      CFG.jur.declaracao,
+      "",
+      "CIÊNCIA (marcada pelo participante)",
+      CFG.jur.ciencia,
+      "",
+      "AVISO DE PROTEÇÃO DE DADOS",
+      CFG.jur.aviso
+    ].join("\n"),
+    autorizaAlimentar: S.consenteAlimentar ? "sim" : "não",
+    declarou: S.declaracao ? "sim" : "não",
+    cienteAviso: S.ciencia ? "sim" : "não",
     cliente: CFG.cliente,
     enviadoEm: new Date().toISOString(),
     fuso: Intl.DateTimeFormat().resolvedOptions().timeZone || "",
     dispositivo: navigator.userAgent,
     nome: S.nome, email: S.email, cargo: S.cargo,
+    /* o script confere este código de novo antes de gravar qualquer coisa */
+    codigo: S.codigo,
     desafio: S.respostas.desafio || "",
     melhoria: S.respostas.melhoria || "",
     valoriza: S.respostas.valoriza || "",
@@ -732,28 +955,44 @@ function pacote(){
   };
 }
 
+/* Única porta de saída da página para o script do Google.
+   Devolve o texto da resposta, ou "" se nem chegou lá. */
+async function postar(dados){
+  try{
+    if(!CFG.ENDPOINT || CFG.ENDPOINT.indexOf("COLE_AQUI") === 0) return "";
+    const r = await fetch(CFG.ENDPOINT, {
+      method:"POST",
+      headers:{ "Content-Type":"text/plain;charset=utf-8" },
+      body: JSON.stringify(dados)
+    });
+    return (await r.text()).trim();
+  }catch(e){ return ""; }
+}
+
 async function enviar(botao){
   if(S.enviado) return;
   botao.disabled = true;
   botao.textContent = "Enviando...";
   $("#erro").textContent = "";
-  const dados = pacote();
-  try{
-    if(!CFG.ENDPOINT || CFG.ENDPOINT.indexOf("COLE_AQUI") === 0)
-      throw new Error("endpoint não configurado");
-    const resp = await fetch(CFG.ENDPOINT, {
-      method:"POST",
-      headers:{ "Content-Type":"text/plain;charset=utf-8" },
-      body: JSON.stringify(dados)
-    });
-    const txt = await resp.text();
-    if(txt.indexOf("ok") === -1) throw new Error(txt || "resposta inesperada");
+
+  const r = await postar(pacote());
+
+  if(r === "ok"){
     S.enviado = true;
     try{ localStorage.removeItem(CHAVE); }catch(e){}
     vai(roteiro().length - 1);
-  }catch(err){
-    botao.disabled = false;
-    botao.textContent = "Tentar enviar de novo";
+    return;
+  }
+
+  botao.disabled = false;
+  botao.textContent = "Tentar enviar de novo";
+  if(r === "ja-respondeu"){
+    $("#erro").innerHTML = "Este e-mail já respondeu o formulário. Se precisar corrigir "
+      + "alguma coisa, escreva para " + esc(CFG.contato) + ".";
+  } else if(r === "nao-verificado"){
+    $("#erro").innerHTML = "A confirmação do seu e-mail venceu. Volte ao começo para pedir "
+      + "um código novo, as suas respostas continuam guardadas aqui.";
+  } else {
     $("#erro").innerHTML = "Não consegui enviar agora. Tente de novo em alguns segundos. "
       + "Se continuar sem funcionar, escreva para " + esc(CFG.contato) + ".";
   }
